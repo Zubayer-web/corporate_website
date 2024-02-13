@@ -1,4 +1,9 @@
-<?php require_once '../vendor/autoload.php'; ?>
+<?php 
+namespace App\classes;
+require_once '../vendor/autoload.php';
+$user = new User();
+    $user->logincheck() ? header("location: index.php") : false ;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,31 +49,33 @@
                 <div class="row">
                     <div class="col-md-6 bg-light p-5 rounded-2">
                         <h2 class=" pb-4 ">Login Your Account</h2>
+                        <hr class="bg-black">
+                        <div id="loginError"></div>
                         <form id="loginForm">
                             <div class="form-user  mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-addon1">@</span>
-                                    <input type="text" id="useremail" name="useremail" class="form-control"
-                                        placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="email" id="loginUsername" name="useremail" class="form-control"
+                                        placeholder="Email address" aria-label="Username" aria-describedby="basic-addon1" value="<?php echo isset($_COOKIE['useremail']) ? $_COOKIE['useremail'] : ''; ?>">
                                 </div>
-                                <div id="emailHelp" class="form-text"></div>
+                                <div id="loginUsernameEorr" class="form-text"></div>
                             </div>
                             <div class="form-user  mb-3">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1"><i
                                             class="fa-solid fa-key"></i></span>
-                                    <input type="password" id="password" name="password" class="form-control"
-                                        placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="password" id="loginPassword" name="password" class="form-control"
+                                        placeholder="Password" aria-label="Username" aria-describedby="basic-addon1" value="<?php echo isset($_COOKIE['password']) ? $_COOKIE['password'] : ''; ?>">
                                 </div>
-                                <div id="emailHelp" class="form-text"></div>
+                                <div id="loginPasswordError" class="form-text"></div>
                             </div>
 
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                <input type="checkbox" class="form-check-input" id="loginCheck" name="remember" <?php echo isset($_COOKIE['useremail']) ? 'checked':''; ?>>
+                                <label class="form-check-label" for="loginCheck">Remember Me</label>
                                 <a class="float-end" id="forgetForm">Forget Password?</a>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button id="login" type="submit" class="btn btn-primary">Log in</button>
                         </form>
                     </div>
                     <div class="col-md-6 bg-dark p-5">
@@ -95,51 +102,43 @@
                 <div class="row">
                     <div class="col-md-6 bg-light p-5 rounded-2">
                         <h2 class="pb-4">Login Your Account</h2>
+                        <hr class="bg-black">
+                        <div id="displayError"></div>
                         <form id="registerForm">
-
                             <div class="form-user mb-3">
                                 <div class="input-group">
-                                    <span class="input-group-text" id="basic-addon1"><i
-                                            class="fa-solid fa-user"></i></span>
-                                    <input type="text" id="fullname" name="fullname" class="form-control"
-                                        placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user"></i></span>
+                                    <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                                 </div>
-                                <div id="emailHelp" class="form-text"></div>
+                                <div id="fullNameError" class="form-text"></div>
                             </div>
                             <div class="form-user mb-3">
                                 <div class="input-group">
-                                    <span class="input-group-text" id="basic-addon1"><i
-                                            class="fa-solid fa-envelope"></i></span>
-                                    <input type="email" id="useremail" name="useremail" class="form-control"
-                                        placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-envelope"></i></span>
+                                    <input type="email" id="useremail" name="useremail" class="form-control" placeholder="Email Address" aria-label="Email" aria-describedby="basic-addon1">
                                 </div>
-                                <div id="emailHelp" class="form-text"></div>
+                                <div id="emailError" class="form-text"></div>
                             </div>
 
 
                             <div class="form-user  mb-3">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1"><i
-                                            class="fa-solid fa-key"></i></span>
-                                    <input type="password" id="password" name="password" class="form-control"
-                                        placeholder="Password" aria-label="Username" aria-describedby="basic-addon1">
-                                </div>
+                                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-key"></i></span>
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div id="passwordError" class="form-text"></div>
 
                                 <div class="form-user  mb-3">
                                     <div class="input-group mb-3">
-                                        <span class="input-group-text" id="basic-addon1"><i
-                                                class="fa-solid fa-key"></i></span>
-                                        <input type="password" id="c_password" class="form-control"
-                                            placeholder="Re-type Password" aria-label="Username"
-                                            aria-describedby="basic-addon1">
+                                        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-key"></i></span>
+                                        <input type="password" id="c_password" class="form-control" placeholder="Re-type Password" aria-label="Username" aria-describedby="basic-addon1">
                                     </div>
-
-                                    <div id="emailHelp" class="form-text"></div>
+                                    <div id="matcherror" class="form-text"></div>                                    
                                 </div>
 
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                    <input type="checkbox" class="form-check-input" id="registerCheck">
+                                    <label class="form-check-label" for="registerCheck">Check me out</label>
                                 </div>
                                 <button id="register" type="submit" class="btn btn-primary">Submit</button>
                         </form>
@@ -169,12 +168,12 @@
                 <div class="row">
                     <div class="col-md-6 bg-light p-5 rounded-2">
                         <h2 class=" pb-4 ">Login Your Account</h2>
-                        <form id="loginForm">
+                        <form id="forgetForm">
                             <div class="form-user  mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-addon1"><i
                                             class="fa-solid fa-envelope"></i></span>
-                                    <input type="email" id="useremail" name="useremail" class="form-control"
+                                    <input type="email" id="forgetmail" name="useremail" class="form-control"
                                         placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                                 </div>
                                 <div id="emailHelp" class="form-text"></div>

@@ -1,4 +1,11 @@
-<?php require_once 'header.php'; ?>
+<?php 
+namespace App\classes;
+require_once '../vendor/autoload.php';
+$user = new User();
+    $user->logincheck() ? false : header("location: login.php");
+
+    require_once 'header.php';
+?>
       <!--sidebar start-->
       <aside>
       <?php require_once 'sideber.php'; ?>
@@ -312,6 +319,5 @@
           </section>
       </section>
       <!--main content end-->
-
 
 <?php require_once 'footer.php'; ?>
